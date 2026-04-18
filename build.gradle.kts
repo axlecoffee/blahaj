@@ -41,8 +41,8 @@ dependencies {
 }
 
 gradlePlugin {
-    website = "https://github.com/axlecoffee/blahaj-reborn"
-    vcsUrl = "https://github.com/axlecoffee/blahaj-reborn"
+    website = "https://github.com/axlecoffee/blahaj"
+    vcsUrl = "https://github.com/axlecoffee/blahaj"
 
     plugins {
         create("blahaj") {
