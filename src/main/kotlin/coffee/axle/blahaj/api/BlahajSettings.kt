@@ -53,7 +53,9 @@ open class BlahajSettings {
 
     fun modrinth(name: String, dep: Any?) = "maven.modrinth:$name:$dep"
 
-
+    fun txnilib(version: String) {
+        deps.modImplementation(modloaderRequired("toni.%s:${mod.loader}-${mod.mcVersion}:%s", "txnilib", version))
+    }
 
     fun forgeConfig() {
         if (!mod.isFabric)
