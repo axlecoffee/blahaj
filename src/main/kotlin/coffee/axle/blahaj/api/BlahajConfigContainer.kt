@@ -1,4 +1,6 @@
-﻿package toni.blahaj.api
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.api
 
 class BlahajConfigContainer {
     var yarn: Boolean = false

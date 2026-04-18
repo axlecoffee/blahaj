@@ -1,6 +1,8 @@
-package toni.blahaj.setup
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.setup
 
-import toni.blahaj.BlahajBuild
+import coffee.axle.blahaj.BlahajBuild
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.create

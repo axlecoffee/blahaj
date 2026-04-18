@@ -1,4 +1,6 @@
-﻿package toni.blahaj.tasks
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.tasks
 
 import java.io.File
 
@@ -12,16 +14,24 @@ class ManifoldMC {
             isActive: Boolean,
             clearMainProject: Boolean
         ) {
-            val mcVers = listOf("1.18.2", "1.19.2", "1.20.1", "1.21.1", "1.21.4")
+            val mcVers = listOf("1.18.2", "1.19.2", "1.20.1", "1.21.1", "1.21.4", "26.1.2")
             val mcIndex = mcVers.indexOf(mcString)
             val argList = ArrayList<String>()
 
-            val numericalMC = mcString.substring(2).replace(".", "")
+            val numericalMC = if (mcString.startsWith("26.")) {
+                mcString.replace(".", "")
+            } else {
+                mcString.substring(2).replace(".", "")
+            }
             argList.add("MC=$numericalMC")
             argList.add("mc=$numericalMC")
 
             for (i in mcVers.indices) {
-                val mcStr = mcVers[i].replace(".", "_").substring(2)
+                val mcStr = if (mcVers[i].startsWith("26.")) {
+                    mcVers[i].replace(".", "_")
+                } else {
+                    mcVers[i].replace(".", "_").substring(2)
+                }
                 if (mcIndex < i) {
                     argList.add("BEFORE_$mcStr")
                     argList.add("before_$mcStr")
@@ -74,11 +84,21 @@ class ManifoldMC {
                 sb.append("\n")
             }
 
-            if (isActive)
-                File(parent, "../../src/main/build.properties").writeText(sb.toString())
+            val localBuildProperties = File(parent, "src/main/build.properties")
+            val legacySharedBuildProperties = File(parent, "../../src/main/build.properties")
 
-            if (clearMainProject)
-                File(parent, "../../src/main/build.properties").delete()
+            if (isActive) {
+                localBuildProperties.parentFile.mkdirs()
+                localBuildProperties.writeText(sb.toString())
+            }
+
+            if (clearMainProject) {
+                localBuildProperties.delete()
+            }
+
+            if (legacySharedBuildProperties.exists()) {
+                legacySharedBuildProperties.delete()
+            }
         }
     }
 }

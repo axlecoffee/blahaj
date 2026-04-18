@@ -1,8 +1,10 @@
-package toni.blahaj
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj
 
-import dev.kikugie.stonecutter.controller.StonecutterController
-import dev.kikugie.stonecutter.data.tree.TreeBuilder
-import dev.kikugie.stonecutter.settings.StonecutterSettings
+import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
+import dev.kikugie.stonecutter.settings.tree.TreeBuilder
+import dev.kikugie.stonecutter.settings.StonecutterSettingsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.ProjectDescriptor
@@ -22,7 +24,7 @@ class BlahajPlugin : Plugin<Any> {
             is Project -> {
                 if (target.isStonecutterController()) {
                     target.extensions.create("blahaj", BlahajController::class.java, target)
-                    addStonecutterChiseled(target)
+                    addStonecutterTasks(target)
                     return
                 }
 
@@ -34,12 +36,20 @@ class BlahajPlugin : Plugin<Any> {
 
                 target.extensions.extraProperties["loom.platform"] = platform
 
+                val mcVersion = subprojectName.substringBefore('-')
+                val isUnobfuscated = mcVersion.startsWith("26.")
+                val loomPlugin = if (isUnobfuscated && platform != "fabric") {
+                    "dev.architectury.loom-no-remap"
+                } else {
+                    "dev.architectury.loom"
+                }
+
                 with(target.plugins) {
                     apply("maven-publish")
                     apply("application")
                     apply("org.jetbrains.kotlin.jvm")
                     apply("org.jetbrains.kotlin.plugin.serialization")
-                    apply("dev.architectury.loom")
+                    apply(loomPlugin)
                     apply("me.modmuss50.mod-publish-plugin")
                     apply("systems.manifold.manifold-gradle-plugin")
                 }
@@ -53,32 +63,32 @@ class BlahajPlugin : Plugin<Any> {
 
     }
 
-    fun addStonecutterChiseled(target: Project) {
-        val stonecutter = target.extensions.findByType<StonecutterController>()!!
+    fun addStonecutterTasks(target: Project) {
+        val sc = target.extensions.findByType<StonecutterControllerExtension>()!!
 
-        stonecutter registerChiseled target.tasks.register("chiseledBuild", stonecutter.chiseled) {
+        target.tasks.register("buildAll") {
+            group = "blahaj"
+            dependsOn(sc.tasks.named("buildAndCollectLatest"))
+        }
+
+        target.tasks.register("copyToModrinthLauncher") {
+            group = "blahaj"
+            dependsOn(sc.tasks.named("buildAndCopyToModrinth"))
+        }
+
+        target.tasks.register("publishAllRelease") {
+            group = "blahaj"
+            dependsOn(sc.tasks.named("publishMods"))
+        }
+
+        target.tasks.register("publishAllMaven") {
+            group = "blahaj"
+            dependsOn(sc.tasks.named("publish"))
+        }
+
+        target.tasks.register("chiseledBuild") {
             group = "project"
-            ofTask("build")
-        }
-
-        stonecutter registerChiseled target.tasks.register("buildAll", stonecutter.chiseled) {
-            group = "blahaj"
-            ofTask("buildAndCollectLatest")
-        }
-
-        stonecutter registerChiseled target.tasks.register("copyToModrinthLauncher", stonecutter.chiseled) {
-            group = "blahaj"
-            ofTask("buildAndCopyToModrinth")
-        }
-
-        stonecutter registerChiseled target.tasks.register("publishAllRelease", stonecutter.chiseled) {
-            group = "blahaj"
-            ofTask("publishMods")
-        }
-
-        stonecutter registerChiseled target.tasks.register("publishAllMaven", stonecutter.chiseled) {
-            group = "blahaj"
-            ofTask("publish")
+            dependsOn(sc.tasks.named("build"))
         }
 
 
@@ -154,8 +164,6 @@ open class BlahajSettings internal constructor(val settings: Settings) {
         for (it in loaders) {
             val versStr = "$version-$it"
 
-            System.out.println("[Blahaj] " + settings.rootDir.toString())
-
             val dir = File(settings.rootDir, "versions/$versStr")
             if (!dir.exists()) {
                 dir.mkdirs()
@@ -166,18 +174,16 @@ open class BlahajSettings internal constructor(val settings: Settings) {
                 props.writeText("loom.platform=$it")
             }
 
-            vers(versStr, version)
+            version(versStr, version)
         }
     }
 
     fun init(rootProject: ProjectDescriptor, configure: TreeBuilder.() -> Unit) {
-        // Apply Stonecutter plugin programmatically
-        val stonecutter = settings.extensions.findByType<StonecutterSettings>()!!
+        val stonecutter = settings.extensions.findByType<StonecutterSettingsExtension>()!!
         stonecutter.apply {
-            kotlinController = true
-            centralScript = "build.gradle.kts"
+            kotlinController.set(true)
+            centralScript.set("build.gradle.kts")
 
-            //val rootProject = settings.gradle.rootProject as ProjectDescriptor
             create(rootProject) {
                 configure()
             }

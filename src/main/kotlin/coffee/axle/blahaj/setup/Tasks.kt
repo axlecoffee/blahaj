@@ -1,6 +1,8 @@
-package toni.blahaj.setup
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.setup
 
-import toni.blahaj.tasks.RenameExampleMod
+import coffee.axle.blahaj.tasks.RenameExampleMod
 import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DuplicatesStrategy
@@ -14,8 +16,8 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.jvm.tasks.ProcessResources
 import java.io.File
-import toni.blahaj.BlahajBuild
-import toni.blahaj.tasks.ManifoldMC
+import coffee.axle.blahaj.BlahajBuild
+import coffee.axle.blahaj.tasks.ManifoldMC
 
 fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply {
     named<ProcessResources>("processResources") {
@@ -49,13 +51,11 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
 
     // Clean build libs directory because for some reason Arch is stupid (go figure)
     project.tasks.register<DefaultTask>("cleanJar") {
+        val libsDir = project.layout.buildDirectory.dir("libs")
         doLast {
-            if (project.layout.buildDirectory.isPresent)
-            {
-                val libs = File(project.layout.buildDirectory.asFile.get(), "libs")
-                if (libs.exists())
-                    libs.deleteRecursively()
-            }
+            val libs = libsDir.get().asFile
+            if (libs.exists())
+                libs.deleteRecursively()
         }
     }
 
@@ -65,14 +65,14 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
 
     project.tasks.register("setupManifoldPreprocessors") {
         group = "build"
-        ManifoldMC.setupPreprocessor(ArrayList(), mod.loader, project.projectDir, mod.mcVersion, sc.active.project == sc.current.project, true)
+        ManifoldMC.setupPreprocessor(ArrayList(), mod.loader, project.projectDir, mod.mcVersion, sc.active?.project == sc.current.project, true)
     }
 
-    project.tasks.named("setupChiseledBuild") { finalizedBy("setupManifoldPreprocessors") }
-
-    named<RemapJarTask>("remapJar") {
-        if (mod.isNeo) {
-            atAccessWideners.add("${mod.id}.accesswidener")
+    if (project.tasks.findByName("remapJar") != null) {
+        named<RemapJarTask>("remapJar") {
+            if (mod.isNeo) {
+                atAccessWideners.add("${mod.id}.accesswidener")
+            }
         }
     }
 
@@ -87,6 +87,7 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
     named<JavaCompile>("compileJava") {
         options.encoding = "UTF-8"
         options.compilerArgs.add("-Xplugin:Manifold")
+
         // modify the JavaCompile task and inject our auto-generated Manifold symbols
         if(!this.name.startsWith("_")) { // check the name, so we don't inject into Forge internal compilation
             ManifoldMC.setupPreprocessor(
@@ -94,7 +95,7 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
                 mod.loader,
                 project.projectDir,
                 mod.mcVersion,
-                sc.active.project == sc.current.project,
+                sc.active?.project == sc.current.project,
                 false
             )
         }

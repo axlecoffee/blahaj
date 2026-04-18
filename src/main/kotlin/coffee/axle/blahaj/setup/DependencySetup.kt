@@ -1,7 +1,9 @@
-package toni.blahaj.setup
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.setup
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
-import toni.blahaj.BlahajBuild
+import coffee.axle.blahaj.BlahajBuild
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.getByType
@@ -24,8 +26,8 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
     minecraft("com.mojang:minecraft:${mod.mcVersion}")
 
     implementation(annotationProcessor("systems.manifold:manifold-preprocessor:${project.extensions.getByType<ManifoldExtension>().manifoldVersion.get()}")!!)
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    compileOnly("org.projectlombok:lombok:1.18.44")
+    annotationProcessor("org.projectlombok:lombok:1.18.44")
 
 
     if (template.config.yarn || setting("options.yarn"))
@@ -43,6 +45,13 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
             })
         }
     }
+    else if (mod.mcVersion.startsWith("26.")) {
+        if (mod.isFabric) {
+            project.the<LoomGradleExtensionAPI>().noIntermediateMappings()
+            add("mappings", project.the<LoomGradleExtensionAPI>().layered { })
+        }
+        // NeoForge/Forge 26.x uses loom-no-remap — no mappings needed
+    }
     else {
         add("mappings", project.the<LoomGradleExtensionAPI>().layered {
             officialMojangMappings()
@@ -52,6 +61,8 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
                 "1.20.1" -> "1.20.1:2023.09.03"
                 "1.21.1" -> "1.21:2024.07.28"
                 "1.21.4" -> "1.21.4:2024.12.22"
+                "1.21.10" -> "1.21.10:2025.10.12"
+                "1.21.11" -> "1.21.11:2025.12.20"
                 else -> ""
             }
             if (parchmentVersion.isNotEmpty()) {
@@ -89,6 +100,10 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
         depsHandler.addFabric()
         modImplementation("net.fabricmc.fabric-api:fabric-api:${getVersion("deps.fapi")}")
         modImplementation("net.fabricmc:fabric-loader:${getVersion("deps.fabric_loader")}")
+
+        getVersion("deps.flk")?.let {
+            modImplementation("net.fabricmc:fabric-language-kotlin:$it")
+        }
 
 //        if (setting("runtime.sodium"))
 //            modRuntimeOnly(depsHandler.modrinth("sodium", when (mod.mcVersion) {

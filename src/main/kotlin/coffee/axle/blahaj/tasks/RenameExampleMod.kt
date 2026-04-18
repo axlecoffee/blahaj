@@ -1,10 +1,14 @@
-﻿package toni.blahaj.tasks
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import javax.inject.Inject
 
+@DisableCachingByDefault(because = "One-time project rename operation")
 abstract class RenameExampleMod @Inject constructor(private val dir: File, private val modId: String, private val modName: String, private val modDisplayName: String, private val rootNS: String, private val authorID: String) : DefaultTask()
 {
     @TaskAction

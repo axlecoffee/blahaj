@@ -1,11 +1,20 @@
 # Blahaj
+
 Fully automated Gradle plugin for managing multiversion Minecraft mods, built on Stonecutter.
 
-[Read the docs here](https://blahaj.txni.dev/) or get started with the [template mod.](https://github.com/txnimc/TxniTemplate/)
+A massive credit goes to the original creator, [Toni (txnimc)](https://github.com/txnimc) for creating the original [Blahaj](https://github.com/txnimc/Blahaj) project!
+
+The only difference(s) are:
+
+- I have maven control so I know what's coming in :3
+- Support for 1.21.10/1.21.11/26x (Hypixel SkyBlock mods!!!)
+- misc stuff + kotlin (and less of a focus on Forge/Neoforge support, because I don't need it)
+
+[Read the docs here](https://blahaj.txni.dev/) (original) or get started with the [template mod.](https://github.com/axlecoffee/blahaj-template)
 
 ```kotlin
 plugins {
-	id("toni.blahaj")
+	id("coffee.axle.blahaj")
 }
 
 blahaj {
@@ -31,3 +40,7 @@ blahaj {
 	}
 }
 ```
+
+# License
+
+My (axle.coffee) work in this repository is licensed under CC-BY-4.0 please see the REUSE.toml file!

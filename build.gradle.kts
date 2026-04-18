@@ -2,19 +2,17 @@
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-
 plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
     `maven-publish`
-    id("me.modmuss50.mod-publish-plugin") version "0.6.3" apply false
+    id("me.modmuss50.mod-publish-plugin") version "0.8.1" apply false
     id("systems.manifold.manifold-gradle-plugin") version "0.0.2-alpha" apply false
 }
 
-group = "toni.blahaj"
-version = "2.0.0"
+group = "coffee.axle.blahaj"
+version = "3.0.0"
 
-// Repositories for dependencies
 repositories {
     mavenCentral()
     gradlePluginPortal()
@@ -25,7 +23,6 @@ repositories {
     maven("https://maven.kikugie.dev/snapshots")
     maven("https://maven.kikugie.dev/releases")
     maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
-    maven("https://maven.txni.dev/releases")
     maven("https://maven.su5ed.dev/releases")
     maven("https://maven.shedaniel.me/")
     maven("https://www.cursemaven.com")
@@ -34,24 +31,23 @@ repositories {
     maven("https://libraries.minecraft.net")
 }
 
-// Dependencies
 dependencies {
-    implementation("me.modmuss50:mod-publish-plugin:0.6.3")
-    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.9-SNAPSHOT") {
+    implementation("me.modmuss50:mod-publish-plugin:0.8.1")
+    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.14.473") {
         exclude("com.mojang")
     }
     implementation("systems.manifold:manifold-gradle-plugin:0.0.2-alpha")
-    implementation("dev.kikugie:stonecutter:0.6-alpha.5")
+    implementation("dev.kikugie:stonecutter:0.9.1")
 }
 
 gradlePlugin {
-    website = "https://template.txni.dev/"
-    vcsUrl = "https://github.com/txni/Blahaj"
+    website = "https://github.com/axlecoffee/blahaj-reborn"
+    vcsUrl = "https://github.com/axlecoffee/blahaj-reborn"
 
     plugins {
         create("blahaj") {
-            id = "toni.blahaj"
-            implementationClass = "toni.blahaj.BlahajPlugin"
+            id = "coffee.axle.blahaj"
+            implementationClass = "coffee.axle.blahaj.BlahajPlugin"
             displayName = "Blahaj"
             description = "Minecraft multiversion plugin, with full mod project management, built on Stonecutter"
             tags = setOf("minecraft", "mods")
@@ -63,18 +59,16 @@ java {
     withSourcesJar()
     withJavadocJar()
 
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.compileKotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_16)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
-
-// Publishing configuration
 publishing {
     publications {
         register("mavenJava", MavenPublication::class) {
@@ -87,10 +81,8 @@ publishing {
 
     repositories {
         maven {
-            url = uri("https://maven.txni.dev/releases")
-
+            url = uri("https://maven.axle.coffee/releases")
             credentials {
-                // Ensure credentials are correctly fetched and not null
                 username = findProperty("MAVEN_USERNAME") as String? ?: System.getenv("MAVEN_USERNAME")
                 password = findProperty("MAVEN_PASSWORD") as String? ?: System.getenv("MAVEN_PASSWORD")
             }

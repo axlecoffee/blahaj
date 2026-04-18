@@ -1,6 +1,8 @@
-package toni.blahaj.api
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.api
 
-import toni.blahaj.BlahajBuild
+import coffee.axle.blahaj.BlahajBuild
 
 data class ModData (
     val id : String,
@@ -44,7 +46,7 @@ data class ModData (
                 txni.project.properties["client.user"].toString(),
                 txni.project.properties["client.uuid"].toString(),
                 txni.sc.current.project.substringBeforeLast('-'),
-                txni.sc.active.project == txni.sc.current.project,
+                txni.sc.active?.project == txni.sc.current.project,
                 txni.loader,
                 txni.sc.current.project,
                 txni.loader == "fabric",

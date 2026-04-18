@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+# SPDX-License-Identifier: CC-BY-4.0
+
+version = 1
+
+SPDX-PackageName = "blahaj"
+SPDX-PackageSupplier = "Axle Coffee <contact@axle.coffee>"
+SPDX-PackageDownloadLocation = "https://github.com/axlecoffee/blahaj"
+
+[[annotations]]
+path = ["**/*.kt"]
+SPDX-License-Identifier = "CC-BY-4.0"
+SPDX-FileCopyrightText = "Axle Coffee <contact@axle.coffee>"
+
+[[annotations]]
+path = [
+    "**/*.gradle.kts",
+    "**/gradle.properties",
+    "**/gradle-wrapper.properties",
+    "**/libs.versions.toml",
+    "**/*.yml",
+    "**/*.yaml",
+    "*.md",
+    "gradlew",
+    "gradlew.bat",
+]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "Axle Coffee <contact@axle.coffee>"
+
+[[annotations]]
+path = "LICENSES/**"
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "Axle Coffee <contact@axle.coffee>"

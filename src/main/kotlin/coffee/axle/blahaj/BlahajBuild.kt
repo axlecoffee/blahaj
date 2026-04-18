@@ -1,7 +1,9 @@
-package toni.blahaj
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj
 
 import BlahajSettings
-import dev.kikugie.stonecutter.build.StonecutterBuild
+import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import me.modmuss50.mpp.ModPublishExtension
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import net.fabricmc.loom.task.RemapJarTask
@@ -15,13 +17,13 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.*
 import systems.manifold.ManifoldExtension
-import toni.blahaj.api.BlahajConfigContainer
-import toni.blahaj.api.ModData
-import toni.blahaj.data.VersionInfo
-import toni.blahaj.setup.dependencies
-import toni.blahaj.setup.loomSetup
-import toni.blahaj.setup.mavenPublish
-import toni.blahaj.setup.tasks
+import coffee.axle.blahaj.api.BlahajConfigContainer
+import coffee.axle.blahaj.api.ModData
+import coffee.axle.blahaj.data.VersionInfo
+import coffee.axle.blahaj.setup.dependencies
+import coffee.axle.blahaj.setup.loomSetup
+import coffee.axle.blahaj.setup.mavenPublish
+import coffee.axle.blahaj.setup.tasks
 import java.io.File
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
@@ -29,7 +31,7 @@ open class BlahajBuild internal constructor(val project: Project)  {
     lateinit var loom: LoomGradleExtensionAPI
     lateinit var projectName : String
     lateinit var loader : String
-    lateinit var sc : StonecutterBuild
+    lateinit var sc : StonecutterBuildExtension
     lateinit var mod : ModData
 
     lateinit var modrinthPath: String
@@ -60,14 +62,13 @@ open class BlahajBuild internal constructor(val project: Project)  {
     }
 
     fun init() {
-        val stonecutter = project.extensions.findByType<StonecutterBuild>();
-        if (stonecutter == null)
-        {
+        val stonecutter = project.extensions.findByType<StonecutterBuildExtension>()
+        if (stonecutter == null) {
             System.out.println("[Blahaj] Could not find Stonecutter for project ${project.name}")
             return
         }
 
-        sc = stonecutter ?: throw Exception("Could not find StonecutterBuild!")
+        sc = stonecutter
 
         isInitialized = true
         loom = project.extensions.findByType<LoomGradleExtensionAPI>() ?: throw Exception("Could not find Loom!")
@@ -98,24 +99,15 @@ open class BlahajBuild internal constructor(val project: Project)  {
         }
 
         project.repositories {
-            maven("https://maven.pkg.github.com/ims212/ForgifiedFabricAPI") {
-                credentials {
-                    username = "IMS212"
-                    // Read only token
-                    password = "ghp_" + "DEuGv0Z56vnSOYKLCXdsS9svK4nb9K39C1Hn"
-                }
-            }
             maven("https://www.cursemaven.com")
             maven("https://api.modrinth.com/maven")
             maven("https://thedarkcolour.github.io/KotlinForForge/")
             maven("https://maven.kikugie.dev/releases")
-            maven("https://maven.txni.dev/releases")
             maven("https://jitpack.io")
             maven("https://maven.neoforged.net/releases/")
             maven("https://maven.terraformersmc.com/releases/")
             maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
             maven("https://maven.parchmentmc.org")
-            maven("https://maven.su5ed.dev/releases")
             maven("https://maven.su5ed.dev/releases")
             maven("https://maven.fabricmc.net")
             maven("https://maven.shedaniel.me/")
@@ -123,14 +115,13 @@ open class BlahajBuild internal constructor(val project: Project)  {
         }
 
         // The manifold Gradle plugin version. Update this if you update your IntelliJ Plugin!
-        project.extensions.getByType<ManifoldExtension>().apply { manifoldVersion = "2024.1.34" }
+        project.extensions.getByType<ManifoldExtension>().apply { manifoldVersion = "2026.1.6" }
 
 
         // Loom config
         loom.apply(loomSetup(this))
 
         // Dependencies
-        System.out.println("[Blahaj] Dependency Setup")
         DependencyHandlerScope.of(project.dependencies).apply(dependencies(this))
 
         // Tasks
@@ -145,22 +136,35 @@ open class BlahajBuild internal constructor(val project: Project)  {
         }
 
         sc.apply {
-            val j21 = eval(mod.mcVersion, ">=1.20.6")
+            val j25 = mod.mcVersion.startsWith("26.")
+            val j21 = !j25 && eval(mod.mcVersion, ">=1.20.6")
+            val javaTarget = when {
+                j25 -> 25
+                j21 -> 21
+                else -> 17
+            }
+            val javaVersion = JavaVersion.toVersion(javaTarget)
             project.extensions.getByType(JavaPluginExtension::class.java).apply {
                 withSourcesJar()
-                sourceCompatibility = if (j21) JavaVersion.VERSION_21 else JavaVersion.VERSION_17
-                targetCompatibility = if (j21) JavaVersion.VERSION_21 else JavaVersion.VERSION_17
+                sourceCompatibility = javaVersion
+                targetCompatibility = javaVersion
+                toolchain.languageVersion.set(org.gradle.jvm.toolchain.JavaLanguageVersion.of(javaTarget))
             }
         }
 
         // this won't let me move it to a different class so fuck it, it goes here
+        val noRemap = mod.mcVersion.startsWith("26.") && !mod.isFabric
         project.extensions.getByType<ModPublishExtension>().apply(fun ModPublishExtension.() {
-            file = project.tasks.named("remapJar", RemapJarTask::class.java).get().archiveFile
-            additionalFiles.from(project.tasks.named("remapSourcesJar", RemapSourcesJarTask::class.java).get().archiveFile)
+            if (noRemap) {
+                file = project.tasks.named("jar", org.gradle.jvm.tasks.Jar::class.java).get().archiveFile
+            } else {
+                file = project.tasks.named("remapJar", RemapJarTask::class.java).get().archiveFile
+                additionalFiles.from(project.tasks.named("remapSourcesJar", RemapSourcesJarTask::class.java).get().archiveFile)
+            }
             displayName =
                 "${mod.name} ${mod.loader.replaceFirstChar { it.uppercase() }} ${mod.version} for ${mod.mcVersion}"
             version = mod.version
-            changelog = project.rootProject.file("CHANGELOG.md").readText()
+            changelog = project.rootProject.file("CHANGELOG.md").takeIf { it.exists() }?.readText() ?: ""
             type = STABLE
             modLoaders.add(mod.loader)
 

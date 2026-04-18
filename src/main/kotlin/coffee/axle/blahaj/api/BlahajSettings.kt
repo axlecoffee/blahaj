@@ -1,10 +1,12 @@
-﻿import me.modmuss50.mpp.platforms.curseforge.CurseforgeDependencyContainer
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+import me.modmuss50.mpp.platforms.curseforge.CurseforgeDependencyContainer
 import me.modmuss50.mpp.platforms.modrinth.ModrinthDependencyContainer
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import toni.blahaj.BlahajBuild
-import toni.blahaj.api.ModData
-import toni.blahaj.setup.*
+import coffee.axle.blahaj.BlahajBuild
+import coffee.axle.blahaj.api.ModData
+import coffee.axle.blahaj.setup.*
 
 val templateSettings = object : BlahajSettings() {
     override fun configure() {

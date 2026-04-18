@@ -11,4 +11,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Blahaj"
+rootProject.name = "blahaj-reborn"

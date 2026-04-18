@@ -1,11 +1,15 @@
-package toni.blahaj.setup
+// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-FileCopyrightText: Axle Coffee <contact@axle.coffee>
+package coffee.axle.blahaj.setup
 
-import toni.blahaj.BlahajBuild
+import coffee.axle.blahaj.BlahajBuild
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.kotlin.dsl.get
 
 
 fun loomSetup(template : BlahajBuild) : LoomGradleExtensionAPI.() -> Unit = { template.apply {
+    val noRemap = mod.mcVersion.startsWith("26.") && !mod.isFabric
+
     val awPath = when {
         template.config.versionedAccessWideners || template.setting("options.versioned_aw") -> "src/main/resources/${mod.id}_${mod.mcVersion}.accesswidener"
         template.config.platformSpecificAccessWideners -> "src/main/resources/${mod.id}_${mod.loader}_${mod.mcVersion}.accesswidener"
@@ -13,7 +17,7 @@ fun loomSetup(template : BlahajBuild) : LoomGradleExtensionAPI.() -> Unit = { te
     }
 
     val awFile = project.rootProject.file(awPath)
-    if (awFile.exists())
+    if (awFile.exists() && !noRemap)
     {
         accessWidenerPath.set(awFile)
         if (mod.loader == "forge")
