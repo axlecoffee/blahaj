@@ -48,7 +48,6 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
     else if (mod.mcVersion.startsWith("26.")) {
         if (mod.isFabric) {
             project.the<LoomGradleExtensionAPI>().noIntermediateMappings()
-            add("mappings", project.the<LoomGradleExtensionAPI>().layered { })
         }
         // NeoForge/Forge 26.x uses loom-no-remap — no mappings needed
     }

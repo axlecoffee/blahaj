@@ -38,10 +38,11 @@ class BlahajPlugin : Plugin<Any> {
 
                 val mcVersion = subprojectName.substringBefore('-')
                 val isUnobfuscated = mcVersion.startsWith("26.")
-                val loomPlugin = if (isUnobfuscated && platform != "fabric") {
-                    "dev.architectury.loom-no-remap"
-                } else {
-                    "dev.architectury.loom"
+                val loomPlugin = when {
+                    platform == "fabric" && isUnobfuscated -> "net.fabricmc.fabric-loom"
+                    platform == "fabric" -> "net.fabricmc.fabric-loom-remap"
+                    isUnobfuscated -> "dev.architectury.loom-no-remap"
+                    else -> "dev.architectury.loom"
                 }
 
                 with(target.plugins) {
@@ -52,6 +53,22 @@ class BlahajPlugin : Plugin<Any> {
                     apply(loomPlugin)
                     apply("me.modmuss50.mod-publish-plugin")
                     apply("systems.manifold.manifold-gradle-plugin")
+                }
+
+                if (platform == "fabric" && isUnobfuscated) {
+                    val shimMap = mapOf(
+                        "modImplementation" to "implementation",
+                        "modApi" to "api",
+                        "modRuntimeOnly" to "runtimeOnly",
+                        "modCompileOnly" to "compileOnly",
+                        "include" to "implementation"
+                    )
+                    shimMap.forEach { (shimName, baseName) ->
+                        if (target.configurations.findByName(shimName) == null) {
+                            val shim = target.configurations.create(shimName)
+                            target.configurations.getByName(baseName) { extendsFrom(shim) }
+                        }
+                    }
                 }
 
                 target.extensions.create("blahaj", BlahajBuild::class.java, target)

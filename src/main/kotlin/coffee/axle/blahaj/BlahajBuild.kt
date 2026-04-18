@@ -62,6 +62,7 @@ open class BlahajBuild internal constructor(val project: Project)  {
     }
 
     fun init() {
+        System.out.println("Blahaj Initializing build for project ${project.name}")
         val stonecutter = project.extensions.findByType<StonecutterBuildExtension>()
         if (stonecutter == null) {
             System.out.println("[Blahaj] Could not find Stonecutter for project ${project.name}")
@@ -72,10 +73,14 @@ open class BlahajBuild internal constructor(val project: Project)  {
 
         isInitialized = true
         loom = project.extensions.findByType<LoomGradleExtensionAPI>() ?: throw Exception("Could not find Loom!")
-        if (loom.platform == null)
-            throw Exception("Could not find loom.platform!")
 
-        loader = loom.platform.get().name.lowercase()
+        loader = if (project.extensions.extraProperties.has("loom.platform")) {
+            project.extensions.extraProperties["loom.platform"].toString().lowercase()
+        } else if (loom.platform != null) {
+            loom.platform.get().name.lowercase()
+        } else {
+            throw Exception("Could not determine loader for project ${project.name}")
+        }
 
         projectName = sc.current.project
 
@@ -153,7 +158,7 @@ open class BlahajBuild internal constructor(val project: Project)  {
         }
 
         // this won't let me move it to a different class so fuck it, it goes here
-        val noRemap = mod.mcVersion.startsWith("26.") && !mod.isFabric
+        val noRemap = mod.mcVersion.startsWith("26.")
         project.extensions.getByType<ModPublishExtension>().apply(fun ModPublishExtension.() {
             if (noRemap) {
                 file = project.tasks.named("jar", org.gradle.jvm.tasks.Jar::class.java).get().archiveFile

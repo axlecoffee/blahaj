@@ -120,6 +120,11 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
         serverModsDir.walk().filter { it.name.contains(mod.id) }.forEach { it.delete() }
     }
 
+    val outputJar = if (project.tasks.findByName("remapJar") != null)
+        named<RemapJarTask>("remapJar").get().archiveFile
+    else
+        named<org.gradle.jvm.tasks.Jar>("jar").get().archiveFile
+
     register("buildAndCopyToModrinth") {
         group = "build"
 
@@ -134,7 +139,7 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
         doLast {
             outputDirs.forEach { dir ->
                 project.copy {
-                    from(named<RemapJarTask>("remapJar").get().archiveFile)
+                    from(outputJar)
                     into(dir)
                 }
             }
@@ -146,14 +151,14 @@ fun tasks(template : BlahajBuild) : TaskContainer.() -> Unit = { template.apply 
 
     val buildAndCollect = register<Copy>("buildAndCollect") {
         group = "build"
-        from(named<RemapJarTask>("remapJar").get().archiveFile)
+        from(outputJar)
         into(project.rootProject.layout.buildDirectory.file("libs/${mod.version}"))
         dependsOn("build")
     }
 
     val buildAndCollectLatest = register<Copy>("buildAndCollectLatest") {
         group = "build"
-        from(named<RemapJarTask>("remapJar").get().archiveFile)
+        from(outputJar)
         into(project.rootProject.layout.buildDirectory.file("libs/latest"))
         dependsOn("buildAndCollect")
     }
