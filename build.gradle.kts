@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "coffee.axle.blahaj"
-version = "3.0.2"
+version = "3.0.3"
 
 repositories {
     mavenCentral()
@@ -35,7 +35,7 @@ repositories {
 
 dependencies {
     implementation("me.modmuss50:mod-publish-plugin:0.8.1")
-    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.14.473") {
+    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.15.5") {
         exclude("com.mojang")
     }
     implementation("systems.manifold:manifold-gradle-plugin:0.0.2-alpha")
