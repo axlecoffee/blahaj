@@ -29,32 +29,31 @@ data class ModData (
     val depends : MutableMap<String, String>) {
 
     companion object {
-        fun from(txni : BlahajBuild) : ModData {
+        fun from(build: BlahajBuild): ModData {
             return ModData(
-                txni.project.properties["mod.id"].toString(),
-                txni.project.properties["mod.name"].toString(),
-                txni.project.properties["mod.version"].toString(),
-                txni.project.properties["mod.group"].toString(),
-                txni.project.properties["mod.author"].toString(),
-                txni.project.properties["mod.namespace"].toString(),
-                txni.project.properties["mod.display_name"].toString(),
-                txni.project.properties["mod.description"].toString(),
-                txni.project.properties["mod.discord"].toString(),
-                txni.getVersion("mod.mc_dep").toString(),
-                txni.project.properties["mod.license"].toString(),
-                txni.project.properties["mod.github"].toString(),
-                txni.project.properties["client.user"].toString(),
-                txni.project.properties["client.uuid"].toString(),
-                txni.sc.current.project.substringBeforeLast('-'),
-                txni.sc.active?.project == txni.sc.current.project,
-                txni.loader,
-                txni.sc.current.project,
-                txni.loader == "fabric",
-                txni.loader == "forge",
-                txni.loader == "neoforge",
+                build.project.properties["mod.id"].toString(),
+                build.project.properties["mod.name"].toString(),
+                build.project.properties["mod.version"].toString(),
+                build.project.properties["mod.group"].toString(),
+                build.project.properties["mod.author"].toString(),
+                build.project.properties["mod.namespace"].toString(),
+                build.project.properties["mod.display_name"].toString(),
+                build.project.properties["mod.description"].toString(),
+                build.project.properties["mod.discord"].toString(),
+                build.getVersion("mod.mc_dep").toString(),
+                build.project.properties["mod.license"].toString(),
+                build.project.properties["mod.github"].toString(),
+                build.project.properties["client.user"].toString(),
+                build.project.properties["client.uuid"].toString(),
+                build.sc.current.project.substringBeforeLast('-'),
+                build.sc.active?.project == build.sc.current.project,
+                build.loader,
+                build.sc.current.project,
+                build.loader == "fabric",
+                build.loader == "forge",
+                build.loader == "neoforge",
                 mutableMapOf()
             )
-
         }
     }
 

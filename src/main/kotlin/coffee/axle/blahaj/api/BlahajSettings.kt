@@ -8,18 +8,6 @@ import coffee.axle.blahaj.BlahajBuild
 import coffee.axle.blahaj.api.ModData
 import coffee.axle.blahaj.setup.*
 
-val templateSettings = object : BlahajSettings() {
-    override fun configure() {
-        addRequiredMod("sodium")
-            .modrinth()
-            .addPlatform("1.21.1-neoforge", "mc1.21.1-0.6.5-neoforge")
-            .addPlatform("1.21.1-fabric", "mc1.21.1-0.6.5-fabric") { required() }
-
-        addRequiredMod("txnilib", "1.0.1")
-            .modImplementation { id, version -> "toni.${id}:${loader}-${mc}:${version}" }
-    }
-}
-
 open class BlahajSettings {
     public lateinit var build : BlahajBuild
     public lateinit var mod : ModData
@@ -65,25 +53,7 @@ open class BlahajSettings {
 
     fun modrinth(name: String, dep: Any?) = "maven.modrinth:$name:$dep"
 
-//    fun modrinthDepends(modID: String, version: Any?, overrideVersion : String? = null) : String {
-//        build.mod.depends.putIfAbsent(modID, overrideVersion ?: version.toString())
-//        return "maven.modrinth:$modID:$version"
-//    }
-//
-//    fun modrinthDepends(modID: String, version: Any?, overrideVersion : String? = null, overrideModID : String? = null) : String {
-//        build.mod.depends.putIfAbsent(overrideModID ?: modID, overrideVersion ?: version.toString())
-//        return "maven.modrinth:$modID:$version"
-//    }
-//
-//    fun modrinthDependsAny(modID: String, version: Any?, overrideModID : String? = null) : String {
-//        build.mod.depends.putIfAbsent(overrideModID ?: modID, "*")
-//        return "maven.modrinth:$modID:$version"
-//    }
 
-
-    fun txnilib(version: String) {
-        deps.modImplementation(modloaderRequired("toni.%s:${mod.loader}-${mod.mcVersion}:%s", "txnilib", version))
-    }
 
     fun forgeConfig() {
         if (!mod.isFabric)

@@ -20,7 +20,7 @@ abstract class RenameExampleMod @Inject constructor(private val dir: File, priva
                     .replace("example_mod", modId)
                     .replace("ExampleMod", modName)
                     .replace("Example Mod", modDisplayName)
-                    .replace("toni.examplemod", "$authorID.$rootNS")
+                    .replace("coffee.axle.examplemod", "$authorID.$rootNS")
 
                 if(text.isEmpty())
                     return@forEach
@@ -31,7 +31,7 @@ abstract class RenameExampleMod @Inject constructor(private val dir: File, priva
         val javaDir = File(dir, "src/main/java/")
         val resourcesDir = File(dir, "src/main/resources/")
         val generatedDir = File(dir, "src/generated/resources/")
-        val modDir = File(javaDir, "toni/examplemod/")
+        val modDir = File(javaDir, "coffee/axle/examplemod/")
 
         rename(resourcesDir, "mixins.example_mod.json", "mixins.$modId.json")
         rename(resourcesDir, "example_mod.accesswidener", "$modId.accesswidener")
@@ -44,8 +44,8 @@ abstract class RenameExampleMod @Inject constructor(private val dir: File, priva
         rename(modDir, "ExampleMod.java", "$modName.java")
         rename(modDir, "foundation/data/ExampleModDatagen.java", "foundation/data/${modName}Datagen.java")
 
-        rename(javaDir, "toni/examplemod/", "toni/$rootNS/")
-        rename(javaDir, "toni/", "$authorID/")
+        rename(javaDir, "coffee/axle/examplemod/", "coffee/axle/$rootNS/")
+        rename(javaDir, "coffee/axle/", "$authorID/")
 
         File(dir, "wiki/").deleteRecursively()
         File(dir, "package.json").delete()

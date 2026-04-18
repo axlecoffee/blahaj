@@ -192,9 +192,6 @@ open class BlahajBuild internal constructor(val project: Project)  {
 
                 if (mod.isFabric)
                     requires("fabric-api")
-
-                if (setting("options.txnilib"))
-                    requires("txnilib")
             }
 
             curseforge {
@@ -216,9 +213,6 @@ open class BlahajBuild internal constructor(val project: Project)  {
 
                 if (mod.isFabric)
                     requires("fabric-api")
-
-                if (setting("options.txnilib"))
-                    requires("txnilib")
             }
         })
 

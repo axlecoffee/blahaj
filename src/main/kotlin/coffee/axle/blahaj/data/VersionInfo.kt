@@ -8,9 +8,9 @@ class VersionInfo private constructor() {
             // Forge Version
             "deps.fml" to mutableMapOf(
                 "1.20.1-forge" to "47.2.16",
-                "1.21.1-neoforge" to "21.1.96",
+                "1.21.1-neoforge" to "21.1.226",
                 "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.12-beta"
+                "26.1.2-neoforge" to "26.1.2.15-beta"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
@@ -27,19 +27,19 @@ class VersionInfo private constructor() {
             // Fabric API
             "deps.fapi" to mutableMapOf(
                 // TODO: auto populate based on https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml
-                "1.20.1-fabric" to "0.91.0+1.20.1",
+                "1.20.1-fabric" to "0.92.8+1.20.1",
 
-                "1.21.1-fabric" to "0.102.1+1.21.1",
-                "1.21.4-fabric" to "0.114.3+1.21.4",
+                "1.21.1-fabric" to "0.116.11+1.21.1",
+                "1.21.4-fabric" to "0.119.4+1.21.4",
 
 
                 "1.21.10-fabric" to "0.138.4+1.21.10",
                 "1.21.11-fabric" to "0.141.3+1.21.11", // "final" with 8.7m downloads
 
-                "26.1-fabric" to "0.146.0+26.1.2",
-                "26.1.1-fabric" to "0.146.0+26.1.2", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
-                "26.1.2-fabric" to "0.146.0+26.1.2",
-                "26.2-fabric" to "0.146.0+26.2"
+                "26.1-fabric" to "0.145.1+26.1",
+                "26.1.1-fabric" to "0.145.4+26.1.1", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
+                "26.1.2-fabric" to "0.146.1+26.1.2",
+                "26.2-fabric" to "0.146.1+26.2"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
@@ -50,8 +50,8 @@ class VersionInfo private constructor() {
             // Mod Menu
             "deps.modmenu" to mutableMapOf(
                 "1.20.1-fabric" to "7.2.2",
-                "1.21.1-fabric" to "11.0.2",
-                "1.21.4-fabric" to "13.0.0",
+                "1.21.1-fabric" to "11.0.4",
+                "1.21.4-fabric" to "13.0.4",
                 "1.21.10-fabric" to "16.0.1",
                 "1.21.11-fabric" to "17.0.0",
                 "26.1-fabric" to "18.0.0-alpha.8",
@@ -100,7 +100,24 @@ class VersionInfo private constructor() {
             if (gradleVersion == "[VERSIONED]" || gradleVersion == "VERSIONED")
                 gradleVersion = null
 
-            return gradleVersion ?: versionDefaults[propertyKey]?.get(versionString) ?: versionDefaults[propertyKey]?.get("*")
+            if (gradleVersion != null) return gradleVersion
+
+            val hardcoded = versionDefaults[propertyKey]?.get(versionString)
+            if (hardcoded != null) return hardcoded
+
+            val wildcard = versionDefaults[propertyKey]?.get("*")
+            if (wildcard != null) return wildcard
+
+            val parts = versionString.split("-", limit = 2)
+            if (parts.size == 2) {
+                val resolved = VersionResolver.resolve(propertyKey, parts[0], parts[1])
+                if (resolved != null) {
+                    addOrUpdateDefault(propertyKey, versionString, resolved)
+                    return resolved
+                }
+            }
+
+            return null
         }
 
         fun addOrUpdateDefault(propertyKey: String, versionString: String, version: String) {

@@ -88,12 +88,6 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
 
     depsHandler.addGlobal()
 
-    if (setting("options.txnilib"))
-    {
-        val txniLibVersion = project.properties["options.txnilib_version"].toString()
-        modImplementation(depsHandler.modloaderRequired("toni.%s:${mod.loader}-${mod.mcVersion}:%s", "txnilib", txniLibVersion))
-    }
-
     if (mod.isFabric) {
         modImplementation(depsHandler.modrinth("modmenu", getVersion("deps.modmenu")))
 
