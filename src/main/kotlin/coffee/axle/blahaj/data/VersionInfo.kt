@@ -39,7 +39,7 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "0.145.1+26.1",
                 "26.1.1-fabric" to "0.145.4+26.1.1", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
                 "26.1.2-fabric" to "0.146.1+26.1.2",
-                "26.2-fabric" to "0.146.1+26.2"
+                "26.2-fabric" to "0.146.2+26.2"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
