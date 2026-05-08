@@ -57,6 +57,52 @@ open class BlahajSettings {
         deps.modImplementation(modloaderRequired("toni.%s:${mod.loader}-${mod.mcVersion}:%s", "txnilib", version))
     }
 
+    fun mocha(version: String) {
+        build.project.extensions.extraProperties["options.mocha"] = "true"
+        build.project.extensions.extraProperties["options.mocha_version"] = version
+    }
+
+    fun sodium(version: String? = null) {
+        val v = version ?: build.getVersion("deps.sodium")?.toString()?.takeIf { it.isNotEmpty() }
+            ?: error("[Blahaj] No sodium version found for $mc. Pass an explicit version.")
+        if (isNewSodiumMc(mc)) {
+            // 0.8.x+ on CaffeineMC's immutable maven
+            deps.modCompileOnlyNonTransitive("net.caffeinemc:sodium-fabric:$v")
+        } else {
+            // pre-0.8 — not on CaffeineMC maven, use Modrinth with raw version_number
+            deps.modCompileOnlyNonTransitive("maven.modrinth:sodium:$v")
+        }
+    }
+
+    fun iris(version: String? = null) {
+        val v = version ?: build.getVersion("deps.iris")?.toString()?.takeIf { it.isNotEmpty() }
+            ?: error("[Blahaj] No iris version found for ${mod.mcVersion}. Pass an explicit version: iris(\"mc1.21.11-1.8.1-fabric\")")
+        deps.modCompileOnly("maven.modrinth:iris:$v")
+    }
+
+    fun devauth(version: String? = null) {
+        val v = version ?: build.getVersion("deps.devauth")?.toString()?.takeIf { it.isNotEmpty() }
+            ?: error("[Blahaj] No devauth version found. Pass an explicit version: devauth(\"1.2.2\")")
+        deps.modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:$v")
+    }
+
+    fun mixinExtras(version: String? = null) {
+        val v = version ?: build.getVersion("deps.mixinextras")?.toString()?.takeIf { it.isNotEmpty() }
+            ?: error("[Blahaj] No mixinextras version found. Pass an explicit version: mixinExtras(\"0.5.4\")")
+        deps.annotationProcessor("io.github.llamalad7:mixinextras-fabric:$v")
+        deps.implementation("io.github.llamalad7:mixinextras-fabric:$v")
+        deps.include("io.github.llamalad7:mixinextras-fabric:$v")
+    }
+
+    fun hypixel(modrinthFabricVersion: String? = null, modApiVersion: String? = null) {
+        val modrinth = modrinthFabricVersion
+            ?: build.getVersion("deps.hypixel")?.toString()?.takeIf { it.isNotEmpty() }
+            ?: error("[Blahaj] No hypixel-mod-api version found for $mc. Pass an explicit version.")
+        val api = modApiVersion ?: modrinth.substringBefore("+build")
+        deps.modImplementation("net.hypixel:mod-api:$api")
+        deps.include("maven.modrinth:hypixel-mod-api:$modrinth")
+    }
+
     fun forgeConfig() {
         if (!mod.isFabric)
             return
@@ -108,6 +154,16 @@ open class BlahajSettings {
         publishCallbacks.add { modrinth?.incompatible(*slugs)}
     }
 
+
+    private fun isNewSodiumMc(mcVersion: String): Boolean {
+        val parts = mcVersion.split(".")
+        val major = parts[0].toIntOrNull() ?: return false
+        if (major > 1) return true // 26.x and beyond
+        if (parts.size < 3) return false
+        val minor = parts[1].toIntOrNull() ?: return false
+        val patch = parts[2].toIntOrNull() ?: return false
+        return minor > 21 || (minor == 21 && patch >= 11)
+    }
 
     open fun configure() {}
     open fun addGlobal() {}

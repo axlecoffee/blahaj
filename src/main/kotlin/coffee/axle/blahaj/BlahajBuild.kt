@@ -104,6 +104,7 @@ open class BlahajBuild internal constructor(val project: Project)  {
         }
 
         project.repositories {
+            maven("https://maven.axle.coffee/releases")
             maven("https://www.cursemaven.com")
             maven("https://api.modrinth.com/maven")
             maven("https://thedarkcolour.github.io/KotlinForForge/")
@@ -117,6 +118,10 @@ open class BlahajBuild internal constructor(val project: Project)  {
             maven("https://maven.fabricmc.net")
             maven("https://maven.shedaniel.me/")
             maven("https://maven.fallenbreath.me/releases")
+            maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+            maven("https://repo.hypixel.net/repository/Hypixel/") // Hypixel API thing hella useful
+            maven("https://maven.caffeinemc.net/releases") // Sodium
+            maven("https://repo.spongepowered.org/repository/maven-public/") // MixinExtras
         }
 
         // The manifold Gradle plugin version. Update this if you update your IntelliJ Plugin!

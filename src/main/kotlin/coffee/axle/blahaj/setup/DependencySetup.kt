@@ -4,6 +4,7 @@ package coffee.axle.blahaj.setup
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import coffee.axle.blahaj.BlahajBuild
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.getByType
@@ -21,6 +22,9 @@ fun DependencyHandler.modCompileOnly(dependencyNotation: Any) = add("modCompileO
 fun DependencyHandler.runtimeOnly(dependencyNotation: Any) = add("runtimeOnly", dependencyNotation)
 fun DependencyHandler.include(dependencyNotation: Any) = add("include", dependencyNotation)
 fun DependencyHandler.vineflowerDecompilerClasspath(dependencyNotation: Any) = add("vineflowerDecompilerClasspath", dependencyNotation)
+
+fun DependencyHandler.modCompileOnlyNonTransitive(dependencyNotation: String) =
+    add("modCompileOnly", (create(dependencyNotation) as ExternalModuleDependency).also { it.isTransitive = false })
 
 fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { val outerDependencyHandler = this.dependencies; template.apply {
     minecraft("com.mojang:minecraft:${mod.mcVersion}")
@@ -49,7 +53,7 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
         if (mod.isFabric) {
             project.the<LoomGradleExtensionAPI>().noIntermediateMappings()
         }
-        // NeoForge/Forge 26.x uses loom-no-remap — no mappings needed
+        // NeoForge/Forge 26.x uses loom-no-remap
     }
     else {
         add("mappings", project.the<LoomGradleExtensionAPI>().layered {
@@ -91,6 +95,13 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
     {
         val txniLibVersion = project.properties["options.txnilib_version"].toString()
         modImplementation(depsHandler.modloaderRequired("toni.%s:${mod.loader}-${mod.mcVersion}:%s", "txnilib", txniLibVersion))
+    }
+
+    if (setting("options.mocha")) {
+        val mochaVersion = project.properties["options.mocha_version"].toString()
+        modImplementation(depsHandler.modloaderRequired(
+            "coffee.axle.mocha:mocha-%s:%s", mod.mcVersion, mochaVersion
+        ))
     }
 
     if (mod.isFabric) {

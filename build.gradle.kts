@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "coffee.axle.blahaj"
-version = "3.0.4"
+version = "3.1.0"
 
 repositories {
     mavenCentral()
@@ -141,6 +141,31 @@ tasks.register("updateVersions") {
             }
         }
 
+        fun replaceMapBlock(sectionKey: String, newEntries: Map<String, String>) {
+            val keyStr = "\"$sectionKey\" to mutableMapOf"
+            val keyIdx = content.indexOf(keyStr)
+            if (keyIdx == -1) {
+                logger.warn("[Blahaj] Section '$sectionKey' not found in VersionInfo.kt")
+                return
+            }
+            val mapKeywordEnd = keyIdx + keyStr.length
+            val openParen = content.indexOf("(", mapKeywordEnd)
+            if (openParen == -1) return
+            val closeParen = content.indexOf(")", openParen)
+            if (closeParen == -1) return
+
+            val replacement = if (newEntries.isEmpty()) {
+                "<String, String>()"
+            } else {
+                val lines = newEntries.entries.joinToString(",\n") { (k, v) ->
+                    "                \"$k\" to \"$v\""
+                }
+                "(\n$lines\n            )"
+            }
+            content = content.substring(0, mapKeywordEnd) + replacement + content.substring(closeParen + 1)
+            logger.lifecycle("  Replaced $sectionKey with ${newEntries.size} entries")
+        }
+
         val gson = com.google.gson.Gson()
 
         logger.lifecycle("[Blahaj] Fetching latest FLK...")
@@ -224,6 +249,101 @@ tasks.register("updateVersions") {
             }
             for ((mc, neo) in mcToNeo) {
                 updateEntry("deps.fml", "$mc-neoforge", neo)
+            }
+        }
+
+        logger.lifecycle("[Blahaj] Fetching latest Sodium versions...")
+        fun isNewSodiumMc(mcVersion: String): Boolean {
+            val parts = mcVersion.split(".")
+            val major = parts[0].toIntOrNull() ?: return false
+            if (major > 1) return true // 26.x and beyond
+            if (parts.size < 3) return false
+            val minor = parts[1].toIntOrNull() ?: return false
+            val patch = parts[2].toIntOrNull() ?: return false
+            return minor > 21 || (minor == 21 && patch >= 11)
+        }
+
+        val mcToSodium = linkedMapOf<String, String>()
+        // MC >= 1.21.11: query CaffeineMC's immutable maven directly (0.8.x+)
+        // Coordinate: net.caffeinemc:sodium-fabric:{sodiumVer}+mc{mcVer}
+        fetch("https://maven.caffeinemc.net/releases/net/caffeinemc/sodium-fabric/maven-metadata.xml")?.let { xml ->
+            var searchFromCF = 0
+            while (true) {
+                val start = xml.indexOf("<version>", searchFromCF)
+                if (start == -1) break
+                val end = xml.indexOf("</version>", start)
+                if (end == -1) break
+                val v = xml.substring(start + 9, end).trim()
+                searchFromCF = end + 10
+                val plusMcIdx = v.indexOf("+mc")
+                if (plusMcIdx == -1) continue
+                val mc = v.substring(plusMcIdx + 3)
+                if (!isNewSodiumMc(mc)) continue
+                val key = "$mc-fabric"
+                val existing = mcToSodium[key]
+                // Always prefer stable over beta; among same stability, prefer latest (overwrite)
+                val candidateIsBeta = v.contains("-beta") || v.contains("-alpha")
+                val existingIsBeta = existing != null && (existing.contains("-beta") || existing.contains("-alpha"))
+                if (existing == null || (!candidateIsBeta && existingIsBeta) || (candidateIsBeta == existingIsBeta)) {
+                    mcToSodium[key] = v
+                    logger.lifecycle("  sodium[caffeinemc] $mc -> $v")
+                }
+            }
+        }
+        // MC < 1.21.11: pre-0.8 not on CaffeineMC maven; use Modrinth
+        // Store the raw Modrinth version_number for use as maven.modrinth:sodium:{version}
+        fetch("https://api.modrinth.com/v2/project/AANobbMI/version")?.let { json ->
+            val array = gson.fromJson(json, com.google.gson.JsonArray::class.java)
+            for (element in array) {
+                val obj = element.asJsonObject
+                val versionNumber = obj.get("version_number")?.asString ?: continue
+                if (obj.get("version_type")?.asString != "release") continue
+                val loaders = obj.getAsJsonArray("loaders") ?: continue
+                if (loaders.none { it.asString == "fabric" }) continue
+                val gameVersions = obj.getAsJsonArray("game_versions") ?: continue
+                for (gv in gameVersions) {
+                    val mc = gv.asString
+                    val key = "$mc-fabric"
+                    if (mcToSodium.containsKey(key)) continue
+                    if (isNewSodiumMc(mc)) continue
+                    mcToSodium[key] = versionNumber
+                    logger.lifecycle("  sodium[modrinth] $mc -> $versionNumber")
+                }
+            }
+        }
+        replaceMapBlock("deps.sodium", mcToSodium)
+
+        logger.lifecycle("[Blahaj] Fetching latest Iris versions (Modrinth)...")
+        fetch("https://api.modrinth.com/v2/project/YL57xq9U/version")?.let { json ->
+            val array = gson.fromJson(json, com.google.gson.JsonArray::class.java)
+            val mcToIris = linkedMapOf<String, String>()
+            for (element in array) {
+                val obj = element.asJsonObject
+                val versionNumber = obj.get("version_number")?.asString ?: continue
+                val versionType = obj.get("version_type")?.asString ?: "release"
+                val loaders = obj.getAsJsonArray("loaders") ?: continue
+                if (loaders.none { it.asString == "fabric" }) continue
+                val gameVersions = obj.getAsJsonArray("game_versions") ?: continue
+                for (gv in gameVersions) {
+                    val mc = gv.asString
+                    val key = "$mc-fabric"
+                    val existing = mcToIris[key]
+                    if (existing == null || (versionType == "release" &&
+                            (existing.contains("alpha") || existing.contains("beta")))) {
+                        mcToIris[key] = versionNumber
+                    }
+                }
+            }
+            for ((key, ver) in mcToIris) logger.lifecycle("  iris[$key] -> $ver")
+            replaceMapBlock("deps.iris", mcToIris)
+        }
+
+        logger.lifecycle("[Blahaj] Fetching latest MixinExtras version...")
+        fetch("https://repo.spongepowered.org/repository/maven-public/io/github/llamalad7/mixinextras-fabric/maven-metadata.xml")?.let { xml ->
+            val latest = parseXmlTag(xml, "release") ?: parseXmlTag(xml, "latest")
+            if (latest != null) {
+                logger.lifecycle("  Latest MixinExtras: $latest")
+                updateEntry("deps.mixinextras", "*", latest)
             }
         }
 
