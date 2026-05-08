@@ -102,18 +102,15 @@ class VersionInfo private constructor() {
             * Furthermore, Sodium does support NEOFORGE in a "beta" state - however i dont actually use neoforge, feel free to PR
             */
             "deps.sodium" to mutableMapOf(
-                "26.1.2-fabric" to "0.8.10+mc26.1.2",
-                "26.1.1-fabric" to "0.8.9+mc26.1.1",
-                "26.1-fabric" to "0.8.8+mc26.1",
-
                 "1.21.11-fabric" to "0.8.11+mc1.21.11",
-                "1.21.10-fabric" to "mc1.21.10-0.7.3-fabric",
-
+                "26.1-fabric" to "0.8.8+mc26.1",
+                "26.1.1-fabric" to "0.8.9+mc26.1.1",
+                "26.1.2-fabric" to "0.8.10+mc26.1.2",
                 "1.21.9-fabric" to "mc1.21.10-0.7.3-fabric",
-                "1.21.8-fabric" to "mc1.21.8-0.7.3-fabric",
-                "1.21.7-fabric" to "mc1.21.8-0.7.3-fabric",
+                "1.21.10-fabric" to "mc1.21.10-0.7.3-fabric",
                 "1.21.6-fabric" to "mc1.21.8-0.7.3-fabric",
-                // autopopulated - unsorted below
+                "1.21.7-fabric" to "mc1.21.8-0.7.3-fabric",
+                "1.21.8-fabric" to "mc1.21.8-0.7.3-fabric",
                 "1.21.4-fabric" to "mc1.21.4-0.6.13-fabric",
                 "1.21.2-fabric" to "mc1.21.3-0.6.13-fabric",
                 "1.21.3-fabric" to "mc1.21.3-0.6.13-fabric",
@@ -140,18 +137,15 @@ class VersionInfo private constructor() {
             ),
 
             "deps.iris" to mutableMapOf(
-                "26.1.2-fabric" to "1.10.9+26.1-fabric",
-                "26.1.1-fabric" to "1.10.9+26.1-fabric",
                 "26.1-fabric" to "1.10.9+26.1-fabric",
-
+                "26.1.1-fabric" to "1.10.9+26.1-fabric",
+                "26.1.2-fabric" to "1.10.9+26.1-fabric",
                 "1.21.11-fabric" to "1.10.7+1.21.11-fabric",
-                "1.21.10-fabric" to "1.9.7+1.21.10-fabric",
-
                 "1.21.9-fabric" to "1.9.7+1.21.10-fabric",
-                "1.21.8-fabric" to "1.9.6+1.21.8-fabric",
-                "1.21.7-fabric" to "1.9.6+1.21.8-fabric",
+                "1.21.10-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.6-fabric" to "1.9.6+1.21.8-fabric",
-
+                "1.21.7-fabric" to "1.9.6+1.21.8-fabric",
+                "1.21.8-fabric" to "1.9.6+1.21.8-fabric",
                 "1.21.5-fabric" to "1.8.11+1.21.5-fabric",
                 "1.20.1-fabric" to "1.7.6+1.20.1",
                 "1.21.4-fabric" to "1.8.8+1.21.4-fabric",
