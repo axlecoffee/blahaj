@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "coffee.axle.blahaj"
-version = "3.1.0"
+version = "3.1.1"
 
 repositories {
     mavenCentral()
