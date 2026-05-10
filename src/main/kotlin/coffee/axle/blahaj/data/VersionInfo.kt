@@ -55,9 +55,9 @@ class VersionInfo private constructor() {
                 "1.21.4-fabric" to "13.0.4",
                 "1.21.10-fabric" to "16.0.1",
                 "1.21.11-fabric" to "17.0.0",
-                "26.1-fabric" to "18.0.0-alpha.8",
-                "26.1.1-fabric" to "18.0.0-alpha.8",
-                "26.1.2-fabric" to "18.0.0-alpha.8"
+                "26.1-fabric" to "18.0.0-beta.1",
+                "26.1.1-fabric" to "18.0.0-beta.1",
+                "26.1.2-fabric" to "18.0.0-beta.1"
                 //"26.2-fabric" to "18.0.0-alpha.8"
             ),
             // Minecraft Dependency Block
