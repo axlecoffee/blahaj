@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.get
 
 
 fun loomSetup(template : BlahajBuild) : LoomGradleExtensionAPI.() -> Unit = { template.apply {
-    val noRemap = mod.mcVersion.startsWith("26.") && !mod.isFabric
+    val noRemap = mod.mcVersion.startsWith("26.")
 
     val awPath = when {
         template.config.versionedAccessWideners || template.setting("options.versioned_aw") -> "src/main/resources/${mod.id}_${mod.mcVersion}.accesswidener"

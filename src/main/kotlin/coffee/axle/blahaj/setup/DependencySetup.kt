@@ -99,9 +99,12 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
 
     if (setting("options.mocha")) {
         val mochaVersion = project.properties["options.mocha_version"].toString()
-        modImplementation(depsHandler.modloaderRequired(
-            "coffee.axle.mocha:mocha-%s:%s", mod.mcVersion, mochaVersion
-        ))
+        val mochaDep = depsHandler.modloaderRequired("coffee.axle.mocha:mocha-%s:%s", mod.mcVersion, mochaVersion)
+        if (setting("options.mocha_include")) {
+            include(modImplementation(mochaDep)!!)
+        } else {
+            modImplementation(mochaDep)
+        }
     }
 
     if (mod.isFabric) {

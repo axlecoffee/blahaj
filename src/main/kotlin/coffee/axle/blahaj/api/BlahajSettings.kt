@@ -57,9 +57,10 @@ open class BlahajSettings {
         deps.modImplementation(modloaderRequired("toni.%s:${mod.loader}-${mod.mcVersion}:%s", "txnilib", version))
     }
 
-    fun mocha(version: String) {
+    fun mocha(version: String, include: Boolean = false) {
         build.project.extensions.extraProperties["options.mocha"] = "true"
         build.project.extensions.extraProperties["options.mocha_version"] = version
+        build.project.extensions.extraProperties["options.mocha_include"] = include.toString()
     }
 
     fun sodium(version: String? = null) {
