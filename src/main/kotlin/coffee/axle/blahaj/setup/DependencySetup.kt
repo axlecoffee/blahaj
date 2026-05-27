@@ -107,6 +107,16 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
         }
     }
 
+    if (setting("options.latte")) {
+        val latteVersion = project.properties["options.latte_version"].toString()
+        val latteDep = "coffee.axle.latte:latte:$latteVersion"
+        if (setting("options.latte_include")) {
+            include(modImplementation(latteDep)!!)
+        } else {
+            modImplementation(latteDep)
+        }
+    }
+
     if (mod.isFabric) {
         modImplementation(depsHandler.modrinth("modmenu", getVersion("deps.modmenu")))
 

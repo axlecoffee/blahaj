@@ -63,6 +63,12 @@ open class BlahajSettings {
         build.project.extensions.extraProperties["options.mocha_include"] = include.toString()
     }
 
+    fun latte(version: String, include: Boolean = false) {
+        build.project.extensions.extraProperties["options.latte"] = "true"
+        build.project.extensions.extraProperties["options.latte_version"] = version
+        build.project.extensions.extraProperties["options.latte_include"] = include.toString()
+    }
+
     fun sodium(version: String? = null) {
         val v = version ?: build.getVersion("deps.sodium")?.toString()?.takeIf { it.isNotEmpty() }
             ?: error("[Blahaj] No sodium version found for $mc. Pass an explicit version.")
