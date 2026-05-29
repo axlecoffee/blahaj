@@ -8,7 +8,7 @@ class VersionInfo private constructor() {
             // Forge Version
             "deps.fml" to mutableMapOf(
                 "1.20.1-forge" to "47.2.16",
-                "1.21.1-neoforge" to "21.1.231",
+                "1.21.1-neoforge" to "21.1.232",
                 "1.21.4-neoforge" to "21.4.157",
                 "26.1.2-neoforge" to "26.1.2.67-beta"
             ),
@@ -39,8 +39,8 @@ class VersionInfo private constructor() {
 
                 "26.1-fabric" to "0.145.1+26.1",
                 "26.1.1-fabric" to "0.145.4+26.1.1", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
-                "26.1.2-fabric" to "0.149.1+26.1.2",
-                "26.2-fabric" to "0.149.2+26.2"
+                "26.1.2-fabric" to "0.150.0+26.1.2",
+                "26.2-fabric" to "0.150.1+26.2"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
