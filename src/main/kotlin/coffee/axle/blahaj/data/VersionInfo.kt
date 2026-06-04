@@ -78,7 +78,7 @@ class VersionInfo private constructor() {
             ),
             // Fabric Language Kotlin (MC-version independent, uses "*" wildcard)
             "deps.flk" to mutableMapOf(
-                "*" to "1.13.11+kotlin.2.3.21"
+                "*" to "1.13.12+kotlin.2.4.0"
             ),
 
             // Mocha - this is my personal abstraction library that I will soon use in all my mods
