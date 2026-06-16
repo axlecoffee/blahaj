@@ -23,7 +23,7 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "0.19.2",
                 "26.1.1-fabric" to "0.19.2",
                 "26.1.2-fabric" to "0.19.2", // assume no one is running old fabric loader
-                "26.2-fabric" to "0.19.2" // this "should" be the correct name scheme, currently only 26.2-snapshot-5 is out
+                "26.2-fabric" to "0.19.3"
             ),
             // Fabric API
             "deps.fapi" to mutableMapOf(
@@ -107,6 +107,7 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "0.8.9+mc26.1.1",
                 "26.1.2-fabric" to "0.8.12+mc26.1.2",
                 "26.2r1-fabric" to "0.9.0-beta.3+mc26.2r1",
+                "26.2-fabric" to "0.9.0+mc26.2",
                 "1.21.9-fabric" to "mc1.21.10-0.7.3-fabric",
                 "1.21.10-fabric" to "mc1.21.10-0.7.3-fabric",
                 "1.21.6-fabric" to "mc1.21.8-0.7.3-fabric",
@@ -142,6 +143,7 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "1.10.9+26.1-fabric",
                 "26.1.1-fabric" to "1.10.9+26.1-fabric",
                 "26.1.2-fabric" to "1.10.9+26.1-fabric",
+                "26.2-fabric" to "1.11.0+26.2-fabric",
                 "1.21.11-fabric" to "1.10.7+1.21.11-fabric",
                 "1.21.9-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.10-fabric" to "1.9.7+1.21.10-fabric",
@@ -203,7 +205,8 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "26.1",
                 "26.1.1-fabric" to "26.1.1",
                 "26.1.2-fabric" to "26.1.2",
-                "26.1.2-neoforge" to "26.1.2"
+                "26.1.2-neoforge" to "26.1.2",
+                "26.2-fabric" to "26.2"
             )
         )
 

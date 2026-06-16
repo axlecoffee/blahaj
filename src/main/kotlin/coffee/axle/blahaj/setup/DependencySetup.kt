@@ -118,7 +118,7 @@ fun dependencies(template: BlahajBuild): DependencyHandlerScope.() -> Unit = { v
     }
 
     if (mod.isFabric) {
-        modImplementation(depsHandler.modrinth("modmenu", getVersion("deps.modmenu")))
+        getVersion("deps.modmenu")?.let { modImplementation(depsHandler.modrinth("modmenu", it)) }
 
         depsHandler.addFabric()
         modImplementation("net.fabricmc.fabric-api:fabric-api:${getVersion("deps.fapi")}")
