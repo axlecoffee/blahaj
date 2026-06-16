@@ -104,6 +104,7 @@ open class BlahajBuild internal constructor(val project: Project)  {
         }
 
         project.repositories {
+            mavenLocal()
             maven("https://maven.axle.coffee/releases")
             maven("https://www.cursemaven.com")
             maven("https://api.modrinth.com/maven")
