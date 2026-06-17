@@ -58,7 +58,7 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "18.0.0-beta.1",
                 "26.1.1-fabric" to "18.0.0-beta.1",
                 "26.1.2-fabric" to "18.0.0-beta.1"
-                //"26.2-fabric" to "18.0.0-alpha.8"
+                //"26.2-fabric" to "20.0.0-beta.2"
             ),
             // Minecraft Dependency Block
             "mod.mc_dep" to mutableMapOf(
@@ -139,11 +139,11 @@ class VersionInfo private constructor() {
             ),
 
             "deps.iris" to mutableMapOf(
+                "26.2-fabric" to "1.11.1+26.2-fabric",
                 "1.21.1-fabric" to "1.8.8+1.21.1-fabric",
                 "26.1-fabric" to "1.10.9+26.1-fabric",
                 "26.1.1-fabric" to "1.10.9+26.1-fabric",
                 "26.1.2-fabric" to "1.10.9+26.1-fabric",
-                "26.2-fabric" to "1.11.0+26.2-fabric",
                 "1.21.11-fabric" to "1.10.7+1.21.11-fabric",
                 "1.21.9-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.10-fabric" to "1.9.7+1.21.10-fabric",
