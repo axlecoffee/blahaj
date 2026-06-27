@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "coffee.axle.blahaj"
-version = "3.2.2"
+version = "3.2.3"
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ dependencies {
         exclude("com.mojang")
     }
     implementation("systems.manifold:manifold-gradle-plugin:0.0.2-alpha")
-    implementation("dev.kikugie:stonecutter:0.9.1")
+    implementation("dev.kikugie:stonecutter:0.9.6")
     implementation("com.google.code.gson:gson:2.12.1")
 }
 
