@@ -30,7 +30,7 @@ class VersionInfo private constructor() {
                 // TODO: auto populate based on https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml
                 "1.20.1-fabric" to "0.92.9+1.20.1",
 
-                "1.21.1-fabric" to "0.116.12+1.21.1",
+                "1.21.1-fabric" to "0.116.13+1.21.1",
                 "1.21.4-fabric" to "0.119.4+1.21.4",
 
 
@@ -39,8 +39,8 @@ class VersionInfo private constructor() {
 
                 "26.1-fabric" to "0.145.1+26.1",
                 "26.1.1-fabric" to "0.145.4+26.1.1", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
-                "26.1.2-fabric" to "0.153.0+26.1.2",
-                "26.2-fabric" to "0.153.0+26.2"
+                "26.1.2-fabric" to "0.154.0+26.1.2",
+                "26.2-fabric" to "0.154.0+26.2"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
