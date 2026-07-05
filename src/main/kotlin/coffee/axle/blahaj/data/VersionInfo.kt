@@ -10,7 +10,7 @@ class VersionInfo private constructor() {
                 "1.20.1-forge" to "47.2.16",
                 "1.21.1-neoforge" to "21.1.235",
                 "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.76"
+                "26.1.2-neoforge" to "26.1.2.77"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
