@@ -10,7 +10,7 @@ class VersionInfo private constructor() {
                 "1.20.1-forge" to "47.2.16",
                 "1.21.1-neoforge" to "21.1.235",
                 "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.77"
+                "26.1.2-neoforge" to "26.1.2.78"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
@@ -40,7 +40,7 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "0.145.1+26.1",
                 "26.1.1-fabric" to "0.145.4+26.1.1", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
                 "26.1.2-fabric" to "0.154.0+26.1.2",
-                "26.2-fabric" to "0.154.0+26.2"
+                "26.2-fabric" to "0.154.1+26.2"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
@@ -102,12 +102,13 @@ class VersionInfo private constructor() {
             * Furthermore, Sodium does support NEOFORGE in a "beta" state - however i dont actually use neoforge, feel free to PR
             */
             "deps.sodium" to mutableMapOf(
-                "1.21.11-fabric" to "0.8.12+mc1.21.11",
+                "1.21.11-fabric" to "0.8.13+mc1.21.11",
                 "26.1-fabric" to "0.8.8+mc26.1",
                 "26.1.1-fabric" to "0.8.9+mc26.1.1",
                 "26.1.2-fabric" to "0.8.12+mc26.1.2",
                 "26.2r1-fabric" to "0.9.0-beta.3+mc26.2r1",
                 "26.2-fabric" to "0.9.0+mc26.2",
+                "1.21.1-fabric" to "mc1.21.1-0.8.12-fabric",
                 "1.21.9-fabric" to "mc1.21.10-0.7.3-fabric",
                 "1.21.10-fabric" to "mc1.21.10-0.7.3-fabric",
                 "1.21.6-fabric" to "mc1.21.8-0.7.3-fabric",
@@ -117,7 +118,6 @@ class VersionInfo private constructor() {
                 "1.21.2-fabric" to "mc1.21.3-0.6.13-fabric",
                 "1.21.3-fabric" to "mc1.21.3-0.6.13-fabric",
                 "1.21-fabric" to "mc1.21.1-0.6.13-fabric",
-                "1.21.1-fabric" to "mc1.21.1-0.6.13-fabric",
                 "1.20.1-fabric" to "mc1.20.1-0.5.13-fabric",
                 "1.20.6-fabric" to "mc1.20.6-0.5.11",
                 "1.20.5-fabric" to "mc1.20.6-0.5.8",
