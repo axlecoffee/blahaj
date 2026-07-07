@@ -19,11 +19,12 @@ class VersionInfo private constructor() {
                 "1.21.4-fabric" to "0.16.10",
                 // Use blahaj/3.0.4 for 1.21.10 support with fabric 0.18x
                 "1.21.10-fabric" to "0.19.2",
-                "1.21.11-fabric" to "0.19.2", 
+                "1.21.11-fabric" to "0.19.2",
                 "26.1-fabric" to "0.19.2",
                 "26.1.1-fabric" to "0.19.2",
-                "26.1.2-fabric" to "0.19.2", // assume no one is running old fabric loader
-                "26.2-fabric" to "0.19.3"
+                "26.1.2-fabric" to "0.19.2", // TODO: update to 0.19.3 if needed 
+                "26.2-fabric" to "0.19.3",
+                "26.3-fabric" to "0.19.3"
             ),
             // Fabric API
             "deps.fapi" to mutableMapOf(
@@ -36,11 +37,15 @@ class VersionInfo private constructor() {
 
                 "1.21.10-fabric" to "0.138.4+1.21.10",
                 "1.21.11-fabric" to "0.141.4+1.21.11", // "final" with 8.7m downloads
-
+                // when compiling skyblock mods, its reccomended to target the full version string (26.1.2)
+                // general devs appear to be compiling for 26.1.x however since we declare 26.1.1 and 26.1.2 deps seperately
+                // you may end up getting extremely stale deps if you taget for e.g. 26.1 (compatible with 26.1.2)
                 "26.1-fabric" to "0.145.1+26.1",
-                "26.1.1-fabric" to "0.145.4+26.1.1", // 0.146.1 and 0.146.0 are for "26.1.x" - assume 26.1.3 will supported
-                "26.1.2-fabric" to "0.154.0+26.1.2",
-                "26.2-fabric" to "0.154.1+26.2"
+                "26.1.1-fabric" to "0.145.4+26.1.1",
+                "26.1.2-fabric" to "0.154.2+26.1.2", // 0.154.2 fixes Permission levels
+                "26.2-fabric" to "0.154.2+26.2",
+                // 26.3 is in snapshot phase and should not be declared as 26.3 but its whatever
+                "26.3-fabric" to "0.154.2+26.3"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
@@ -74,7 +79,8 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to ">=26.1",
                 "26.1.2-fabric" to ">=26.1",
                 "26.1.2-neoforge" to "[26.1.2,)",
-                "26.2-fabric" to ">=26.2"
+                "26.2-fabric" to ">=26.2",
+                "26.3-fabric" to ">=26.3"
             ),
             // Fabric Language Kotlin (MC-version independent, uses "*" wildcard)
             "deps.flk" to mutableMapOf(
@@ -92,15 +98,15 @@ class VersionInfo private constructor() {
                 "26.2-fabric" to ""
             ),
             /**
-            * Sodium is extremely interesting
-            * Based on my conversation with douira [318403987911082006] a "Project Maintainer"
-            * all sodium versions after 0.8.0 have been published to their actual https://maven.caffeinemc.net/#/ repository, but for some reason they are not indexed by search engines or something, so they don't show up on mvnrepository or similar sites. This means that the only way to get the version numbers is to scrape them from the repository metadata, which is what I have done for the versions I care about. For older versions, I have left the version string blank, which will cause Blahaj to attempt to resolve it using the VersionResolver, which may or may not work depending on how well it can scrape the repository.
-            * and should be immutable https://discord.com/channels/602796788608401408/1502128021723942952/1502129200566370434
-            * This is unfortunate though, since for as long as i need to support 0.7x (1.21.10 and earlier) the sodium maven wont allow me to pull copies
-            * therefore, versions including and prior to 1.21.10 are pulled from modrinth - which serves copies
-            * I highly doubt the old 1.21.10 (and prior) versions will change, because as douira said, they are unsupported.
-            * Furthermore, Sodium does support NEOFORGE in a "beta" state - however i dont actually use neoforge, feel free to PR
-            */
+             * Sodium is extremely interesting
+             * Based on my conversation with douira [318403987911082006] a "Project Maintainer"
+             * all sodium versions after 0.8.0 have been published to their actual https://maven.caffeinemc.net/#/ repository, but for some reason they are not indexed by search engines or something, so they don't show up on mvnrepository or similar sites. This means that the only way to get the version numbers is to scrape them from the repository metadata, which is what I have done for the versions I care about. For older versions, I have left the version string blank, which will cause Blahaj to attempt to resolve it using the VersionResolver, which may or may not work depending on how well it can scrape the repository.
+             * and should be immutable https://discord.com/channels/602796788608401408/1502128021723942952/1502129200566370434
+             * This is unfortunate though, since for as long as i need to support 0.7x (1.21.10 and earlier) the sodium maven wont allow me to pull copies
+             * therefore, versions including and prior to 1.21.10 are pulled from modrinth - which serves copies
+             * I highly doubt the old 1.21.10 (and prior) versions will change, because as douira said, they are unsupported.
+             * Furthermore, Sodium does support NEOFORGE in a "beta" state - however i dont actually use neoforge, feel free to PR
+             */
             "deps.sodium" to mutableMapOf(
                 "1.21.11-fabric" to "0.8.13+mc1.21.11",
                 "26.1-fabric" to "0.8.8+mc26.1",
@@ -206,11 +212,12 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "26.1.1",
                 "26.1.2-fabric" to "26.1.2",
                 "26.1.2-neoforge" to "26.1.2",
-                "26.2-fabric" to "26.2"
+                "26.2-fabric" to "26.2",
+                "26.3-fabric" to "26.3"
             )
         )
 
-        fun getVersion(gradleProperties: Map<String, *>, propertyKey: String, versionString: String) : String? {
+        fun getVersion(gradleProperties: Map<String, *>, propertyKey: String, versionString: String): String? {
             var gradleVersion = gradleProperties[propertyKey] as? String
             if (gradleVersion == "[VERSIONED]" || gradleVersion == "VERSIONED")
                 gradleVersion = null
