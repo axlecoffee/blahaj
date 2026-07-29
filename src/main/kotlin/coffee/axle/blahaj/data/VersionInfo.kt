@@ -10,7 +10,7 @@ class VersionInfo private constructor() {
                 "1.20.1-forge" to "47.2.16",
                 "1.21.1-neoforge" to "21.1.244",
                 "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.87"
+                "26.1.2-neoforge" to "26.1.2.92"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
@@ -31,12 +31,12 @@ class VersionInfo private constructor() {
                 // TODO: auto populate based on https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml
                 "1.20.1-fabric" to "0.92.11+1.20.1",
 
-                "1.21.1-fabric" to "0.116.14+1.21.1",
+                "1.21.1-fabric" to "0.116.15+1.21.1",
                 "1.21.4-fabric" to "0.119.4+1.21.4",
 
 
                 "1.21.10-fabric" to "0.138.4+1.21.10",
-                "1.21.11-fabric" to "0.141.5+1.21.11", // "final" with 8.7m downloads
+                "1.21.11-fabric" to "0.141.6+1.21.11", // "final" with 8.7m downloads
                 // when compiling skyblock mods, its reccomended to target the full version string (26.1.2)
                 // general devs appear to be compiling for 26.1.x however since we declare 26.1.1 and 26.1.2 deps seperately
                 // you may end up getting extremely stale deps if you taget for e.g. 26.1 (compatible with 26.1.2)
