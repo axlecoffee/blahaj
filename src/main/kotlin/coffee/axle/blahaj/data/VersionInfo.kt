@@ -145,9 +145,9 @@ class VersionInfo private constructor() {
             ),
 
             "deps.iris" to mutableMapOf(
-                "26.1-fabric" to "1.11.2+26.1-fabric",
-                "26.1.1-fabric" to "1.11.2+26.1-fabric",
-                "26.1.2-fabric" to "1.11.2+26.1-fabric",
+                "26.1-fabric" to "1.11.3+26.1-fabric",
+                "26.1.1-fabric" to "1.11.3+26.1-fabric",
+                "26.1.2-fabric" to "1.11.3+26.1-fabric",
                 "26.2-fabric" to "1.11.2+26.2-fabric",
                 "1.21.1-fabric" to "1.8.8+1.21.1-fabric",
                 "1.21.11-fabric" to "1.10.7+1.21.11-fabric",
