@@ -3,6 +3,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.net.HttpURLConnection
 import java.net.URI
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 plugins {
     `java-gradle-plugin`
@@ -13,7 +15,18 @@ plugins {
 }
 
 group = "coffee.axle.blahaj"
-version = "3.2.4"
+
+val baseVersion = "3.2.5"
+
+// `publishSnapshot` publishes blahaj as a dated snapshot (VERSION-YYMMDD-SNAPSHOT) to the snapshots repo
+val snapshotPublish = gradle.startParameter.taskNames.any { it == "publishSnapshot" }
+
+version = if (snapshotPublish) {
+    val datestampthing = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"))
+    "$baseVersion-$datestampthing-SNAPSHOT"
+} else {
+    baseVersion
+}
 
 repositories {
     mavenCentral()
@@ -39,7 +52,7 @@ dependencies {
         exclude("com.mojang")
     }
     implementation("systems.manifold:manifold-gradle-plugin:0.0.2-alpha")
-    implementation("dev.kikugie:stonecutter:0.9.6")
+    implementation("dev.kikugie:stonecutter:0.9.7")
     implementation("com.google.code.gson:gson:2.12.1")
 }
 
@@ -84,13 +97,20 @@ publishing {
 
     repositories {
         maven {
-            url = uri("https://maven.axle.coffee/releases")
+            name = if (snapshotPublish) "axleSnapshots" else "axleReleases"
+            url = uri(if (snapshotPublish) "https://maven.axle.coffee/snapshots" else "https://maven.axle.coffee/releases")
             credentials {
                 username = findProperty("MAVEN_USERNAME") as String? ?: System.getenv("MAVEN_USERNAME")
                 password = findProperty("MAVEN_PASSWORD") as String? ?: System.getenv("MAVEN_PASSWORD")
             }
         }
     }
+}
+
+tasks.register("publishSnapshot") {
+    group = "publishing"
+    description = "Publish a dated snapshot (VERSION-YYMMDD-SNAPSHOT) to maven.axle.coffee/snapshots"
+    dependsOn("publish")
 }
 
 tasks.register("updateVersions") {
