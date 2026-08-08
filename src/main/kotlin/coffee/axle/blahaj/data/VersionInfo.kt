@@ -42,10 +42,10 @@ class VersionInfo private constructor() {
                 // you may end up getting extremely stale deps if you taget for e.g. 26.1 (compatible with 26.1.2)
                 "26.1-fabric" to "0.145.1+26.1",
                 "26.1.1-fabric" to "0.145.4+26.1.1",
-                "26.1.2-fabric" to "0.154.2+26.1.2", // 0.154.2 fixes Permission levels
-                "26.2-fabric" to "0.154.2+26.2",
+                "26.1.2-fabric" to "0.155.2+26.1.2", // 0.154.2 fixes Permission levels
+                "26.2-fabric" to "0.156.0+26.2",
                 // 26.3 is in snapshot phase and should not be declared as 26.3 but its whatever
-                "26.3-fabric" to "0.154.2+26.3"
+                "26.3-fabric" to "0.156.3+26.3"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
@@ -63,7 +63,8 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "18.0.0",
                 "26.1.1-fabric" to "18.0.0",
                 "26.1.2-fabric" to "18.0.0",
-                "26.2-fabric" to "20.0.1"
+                "26.2-fabric" to "20.0.1",
+                "26.3-fabric" to "21.0.0-alpha.1"
             ),
             // Minecraft Dependency Block
             "mod.mc_dep" to mutableMapOf(
