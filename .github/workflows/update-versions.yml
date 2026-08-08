@@ -46,3 +46,11 @@ jobs:
           git add src/main/kotlin/coffee/axle/blahaj/data/VersionInfo.kt
           git commit -m "chore: update version defaults from upstream"
           git push
+
+      - name: Publish snapshot
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          ./gradlew publishSnapshot
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_SECRET }}
