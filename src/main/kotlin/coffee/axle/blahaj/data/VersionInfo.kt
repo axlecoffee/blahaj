@@ -10,7 +10,7 @@ class VersionInfo private constructor() {
                 "1.20.1-forge" to "47.2.16",
                 "1.21.1-neoforge" to "21.1.250",
                 "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.106"
+                "26.1.2-neoforge" to "26.1.2.107"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
@@ -85,7 +85,7 @@ class VersionInfo private constructor() {
             ),
             // Fabric Language Kotlin (MC-version independent, uses "*" wildcard)
             "deps.flk" to mutableMapOf(
-                "*" to "1.13.13+kotlin.2.4.10"
+                "*" to "1.14.1+kotlin.2.4.20"
             ),
 
             // Mocha - this is my personal abstraction library that I will soon use in all my mods
