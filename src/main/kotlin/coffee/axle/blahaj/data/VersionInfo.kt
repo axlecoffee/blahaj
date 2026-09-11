@@ -10,7 +10,7 @@ class VersionInfo private constructor() {
                 "1.20.1-forge" to "47.2.16",
                 "1.21.1-neoforge" to "21.1.250",
                 "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.108"
+                "26.1.2-neoforge" to "26.1.2.109"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
@@ -60,10 +60,10 @@ class VersionInfo private constructor() {
                 "1.21.4-fabric" to "13.0.4",
                 "1.21.10-fabric" to "16.0.1",
                 "1.21.11-fabric" to "17.0.0",
-                "26.1-fabric" to "18.0.0",
-                "26.1.1-fabric" to "18.0.0",
-                "26.1.2-fabric" to "18.0.0",
-                "26.2-fabric" to "20.0.1",
+                "26.1-fabric" to "18.0.1",
+                "26.1.1-fabric" to "18.0.1",
+                "26.1.2-fabric" to "18.0.1",
+                "26.2-fabric" to "20.0.2",
                 "26.3-fabric" to "21.0.0-alpha.1"
             ),
             // Minecraft Dependency Block
