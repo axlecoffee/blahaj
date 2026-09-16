@@ -16,7 +16,7 @@ plugins {
 
 group = "coffee.axle.blahaj"
 
-val baseVersion = "3.3.0"
+val baseVersion = "3.3.1"
 val stonecutterVer = "0.9.8"
 
 // `publishSnapshot` publishes blahaj as a dated snapshot (VERSION-YYMMDD-SNAPSHOT) to the snapshots repo
