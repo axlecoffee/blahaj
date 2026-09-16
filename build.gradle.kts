@@ -16,7 +16,8 @@ plugins {
 
 group = "coffee.axle.blahaj"
 
-val baseVersion = "3.2.5"
+val baseVersion = "3.3.0"
+val stonecutterVer = "0.9.8"
 
 // `publishSnapshot` publishes blahaj as a dated snapshot (VERSION-YYMMDD-SNAPSHOT) to the snapshots repo
 val snapshotPublish = gradle.startParameter.taskNames.any { it == "publishSnapshot" }
@@ -52,7 +53,7 @@ dependencies {
         exclude("com.mojang")
     }
     implementation("systems.manifold:manifold-gradle-plugin:0.0.2-alpha")
-    implementation("dev.kikugie:stonecutter:0.9.7")
+    implementation("dev.kikugie:stonecutter:$stonecutterVer")
     implementation("com.google.code.gson:gson:2.12.1")
 }
 

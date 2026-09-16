@@ -24,7 +24,7 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "0.19.2",
                 "26.1.2-fabric" to "0.19.2", // TODO: update to 0.19.3 if needed 
                 "26.2-fabric" to "0.19.3",
-                "26.3-fabric" to "0.19.3"
+                "26.3-fabric" to "0.19.5" // 2026-08-28 released, 26.3 released after, assume all clients will be on 0.19.5 or newer, not older
             ),
             // Fabric API
             "deps.fapi" to mutableMapOf(
@@ -44,8 +44,8 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "0.145.4+26.1.1",
                 "26.1.2-fabric" to "0.155.2+26.1.2", // 0.154.2 fixes Permission levels
                 "26.2-fabric" to "0.156.0+26.2",
-                // 26.3 is in snapshot phase and should not be declared as 26.3 but its whatever
-                "26.3-fabric" to "0.156.3+26.3"
+
+                "26.3-fabric" to "0.160.5+26.3"
             ),
             // Forge Config API Port
             "deps.forgeconfigapi" to mutableMapOf(
@@ -64,7 +64,7 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "18.0.1",
                 "26.1.2-fabric" to "18.0.1",
                 "26.2-fabric" to "20.0.2",
-                "26.3-fabric" to "21.0.0-alpha.1"
+                "26.3-fabric" to "21.0.0-beta.1"
             ),
             // Minecraft Dependency Block
             "mod.mc_dep" to mutableMapOf(
@@ -96,7 +96,8 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "",
                 "26.1.1-fabric" to "",
                 "26.1.2-fabric" to "",
-                "26.2-fabric" to ""
+                "26.2-fabric" to "",
+                "26.3-fabric" to "",
             ),
             /**
              * Sodium is extremely interesting
@@ -115,6 +116,7 @@ class VersionInfo private constructor() {
                 "26.1.2-fabric" to "0.9.2+mc26.1.2",
                 "26.2r1-fabric" to "0.9.0-beta.3+mc26.2r1",
                 "26.2-fabric" to "0.9.2+mc26.2",
+                "26.3-fabric" to "0.9.2+mc26.3",
                 "26.3r1-fabric" to "0.9.2-beta.2+mc26.3r1",
                 "1.21.1-fabric" to "mc1.21.1-0.8.13-fabric",
                 "1.21.9-fabric" to "mc1.21.10-0.7.3-fabric",
@@ -147,12 +149,14 @@ class VersionInfo private constructor() {
             ),
 
             "deps.iris" to mutableMapOf(
+                "26.3-fabric" to "1.11.6+26.3-fabric",
                 "26.2-fabric" to "1.11.4+26.2-fabric",
                 "26.1-fabric" to "1.11.4+26.1-fabric",
                 "26.1.1-fabric" to "1.11.4+26.1-fabric",
                 "26.1.2-fabric" to "1.11.4+26.1-fabric",
                 "1.21.1-fabric" to "1.8.8+1.21.1-fabric",
                 "1.21.11-fabric" to "1.10.7+1.21.11-fabric",
+                "26.3-fabric" to "1.11.6+26.3-fabric",
                 "1.21.9-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.10-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.6-fabric" to "1.9.6+1.21.8-fabric",
@@ -198,7 +202,10 @@ class VersionInfo private constructor() {
                 "26.1-fabric" to "1.0.2+build.1+mc26.1",
                 "26.1.1-fabric" to "1.0.2+build.1+mc26.1",
                 "26.1.2-fabric" to "1.0.2+build.1+mc26.1",
-                "26.2-fabric" to "1.0.2+build.1+mc26.1"
+                "26.2-fabric" to "1.0.2+build.1+mc26.1",
+                // TODO: fact check
+                "26.3-fabric" to "1.0.2+build.1+mc26.1"
+
             ),
             // Curseforge/Modrinth Version Targets
             "mod.mc_targets" to mutableMapOf(
