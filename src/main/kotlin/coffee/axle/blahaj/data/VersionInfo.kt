@@ -64,7 +64,7 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "18.0.1",
                 "26.1.2-fabric" to "18.0.1",
                 "26.2-fabric" to "20.0.2",
-                "26.3-fabric" to "21.0.0-beta.1"
+                "26.3-fabric" to "21.0.0"
             ),
             // Minecraft Dependency Block
             "mod.mc_dep" to mutableMapOf(
