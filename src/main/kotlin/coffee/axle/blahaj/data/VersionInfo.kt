@@ -8,9 +8,9 @@ class VersionInfo private constructor() {
             // Forge Version
             "deps.fml" to mutableMapOf(
                 "1.20.1-forge" to "47.2.16",
-                "1.21.1-neoforge" to "21.1.251",
-                "1.21.4-neoforge" to "21.4.157",
-                "26.1.2-neoforge" to "26.1.2.109"
+                "1.21.1-neoforge" to "21.1.256",
+                "1.21.4-neoforge" to "21.4.158",
+                "26.1.2-neoforge" to "26.1.2.114"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
@@ -56,14 +56,14 @@ class VersionInfo private constructor() {
             // Mod Menu
             "deps.modmenu" to mutableMapOf(
                 "1.20.1-fabric" to "7.2.2",
-                "1.21.1-fabric" to "11.0.4",
+                "1.21.1-fabric" to "11.0.5",
                 "1.21.4-fabric" to "13.0.4",
                 "1.21.10-fabric" to "16.0.1",
-                "1.21.11-fabric" to "17.0.0",
-                "26.1-fabric" to "18.0.1",
-                "26.1.1-fabric" to "18.0.1",
-                "26.1.2-fabric" to "18.0.1",
-                "26.2-fabric" to "20.0.2",
+                "1.21.11-fabric" to "17.0.1",
+                "26.1-fabric" to "18.0.2",
+                "26.1.1-fabric" to "18.0.2",
+                "26.1.2-fabric" to "18.0.2",
+                "26.2-fabric" to "20.0.3",
                 "26.3-fabric" to "21.0.0"
             ),
             // Minecraft Dependency Block
@@ -149,13 +149,13 @@ class VersionInfo private constructor() {
             ),
 
             "deps.iris" to mutableMapOf(
-                "26.3-fabric" to "1.11.6+26.3-fabric",
+                "26.3-fabric" to "1.11.7+26.3-fabric",
+                "1.21.11-fabric" to "1.10.8+1.21.11-fabric",
                 "26.2-fabric" to "1.11.4+26.2-fabric",
                 "26.1-fabric" to "1.11.4+26.1-fabric",
                 "26.1.1-fabric" to "1.11.4+26.1-fabric",
                 "26.1.2-fabric" to "1.11.4+26.1-fabric",
                 "1.21.1-fabric" to "1.8.8+1.21.1-fabric",
-                "1.21.11-fabric" to "1.10.7+1.21.11-fabric",
                 "1.21.9-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.10-fabric" to "1.9.7+1.21.10-fabric",
                 "1.21.6-fabric" to "1.9.6+1.21.8-fabric",
