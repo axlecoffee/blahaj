@@ -8,9 +8,9 @@ class VersionInfo private constructor() {
             // Forge Version
             "deps.fml" to mutableMapOf(
                 "1.20.1-forge" to "47.2.16",
-                "1.21.1-neoforge" to "21.1.257",
+                "1.21.1-neoforge" to "21.1.259",
                 "1.21.4-neoforge" to "21.4.158",
-                "26.1.2-neoforge" to "26.1.2.115"
+                "26.1.2-neoforge" to "26.1.2.116"
             ),
             // Fabric Version
             "deps.fabric_loader" to mutableMapOf(
