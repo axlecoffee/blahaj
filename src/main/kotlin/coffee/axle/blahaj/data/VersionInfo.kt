@@ -31,7 +31,7 @@ class VersionInfo private constructor() {
                 // TODO: auto populate based on https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml
                 "1.20.1-fabric" to "0.92.12+1.20.1",
 
-                "1.21.1-fabric" to "0.116.17+1.21.1",
+                "1.21.1-fabric" to "0.116.18+1.21.1",
                 "1.21.4-fabric" to "0.119.4+1.21.4",
 
 
