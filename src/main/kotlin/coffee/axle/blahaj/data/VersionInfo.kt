@@ -8,7 +8,7 @@ class VersionInfo private constructor() {
             // Forge Version
             "deps.fml" to mutableMapOf(
                 "1.20.1-forge" to "47.2.16",
-                "1.21.1-neoforge" to "21.1.265",
+                "1.21.1-neoforge" to "21.1.266",
                 "1.21.4-neoforge" to "21.4.161",
                 "26.1.2-neoforge" to "26.1.2.126"
             ),
@@ -64,7 +64,7 @@ class VersionInfo private constructor() {
                 "26.1.1-fabric" to "18.0.2",
                 "26.1.2-fabric" to "18.0.2",
                 "26.2-fabric" to "20.0.3",
-                "26.3-fabric" to "21.0.0"
+                "26.3-fabric" to "21.0.1"
             ),
             // Minecraft Dependency Block
             "mod.mc_dep" to mutableMapOf(
