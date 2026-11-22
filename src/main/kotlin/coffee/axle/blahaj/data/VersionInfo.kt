@@ -117,7 +117,7 @@ class VersionInfo private constructor() {
                 "26.2r1-fabric" to "0.9.0-beta.3+mc26.2r1",
                 "26.2-fabric" to "0.9.2+mc26.2",
                 "26.3r1-fabric" to "0.9.2-beta.2+mc26.3r1",
-                "26.3-fabric" to "0.9.2+mc26.3",
+                "26.3-fabric" to "0.9.3+mc26.3",
                 "1.21.1-fabric" to "mc1.21.1-0.8.13-fabric",
                 "1.21.10-fabric" to "mc1.21.10-0.7.3-fabric",
                 "1.21.9-fabric" to "mc1.21.10-0.7.3-fabric",
